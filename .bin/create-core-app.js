@@ -12,7 +12,7 @@ if (process.argv.length >= 3) {
   }
 }
 
-const clone = spawn("git", ["clone", "https://github.com/edga0011/create-core-app.git", folderName]);
+const clone = spawn("git", ["clone", "https://github.com/edgar0011/create-core-app.git", folderName]);
 
 clone.on("close", code => {
   if (code !== 0) {
