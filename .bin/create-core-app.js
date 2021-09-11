@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-const { spawn } = require("child_process");
+const { spawn, exec } = require("child_process");
 const fs = require("fs");
+var npm = require('npm')
 
 let folderName = '.';
 
@@ -19,6 +20,39 @@ clone.on("close", code => {
     console.error("Cloning the template failed!")
     process.exit(code);
   } else {
-    console.log("🦀 Core + 🕸 App = ❤");
+    exec(`cd ${folderName} && pwd`, (error, stdout, stderr) => {
+    // exec(`cd ${folderName} && npm install`, (error, stdout, stderr) => {
+    // exec(`pwd`, (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`)
+        return
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`)
+        return
+      }
+      console.log(stdout);
+      console.log("...installing");
+
+      npm.commands.install([], function (error, data) {
+        if (error){
+          console.error("Installing the template failed!")
+          process.exit(code);
+          return
+        }
+        console.log("🦀 Core + 🕸 App = ❤");
+        // command succeeded, and data might have some info
+      })
+
+      // const clone2 = spawn('yarn');
+      // clone2.on("close", code => {
+      //   if (code !== 0) {
+      //     console.error("Installing the template failed!")
+      //     process.exit(code);
+      //   } else {
+      //     console.log("🦀 Core + 🕸 App = ❤");
+      //   }
+      // });
+    });
   }
 });

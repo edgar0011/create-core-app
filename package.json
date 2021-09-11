@@ -8,10 +8,10 @@
   },
   "scripts": {
     "dev": "BABEL_ENV=webpack webpack serve --mode=development",
-    "lint": "eslint src",
-    "lint:ts": "eslint src --ext js,jsx,ts,tsx",
-    "lint:quiet": "eslint src --quiet",
-    "lint:ts:quiet": "eslint src --ext js,jsx,ts,tsx --quiet",
+    "lint": "eslint .bin",
+    "lint:ts": "eslint src,.bin --ext js,jsx,ts,tsx",
+    "lint:quiet": "eslint src,.bin --quiet",
+    "lint:ts:quiet": "eslint src,.bin --ext js,jsx,ts,tsx --quiet",
     "lint:fix": "yarn lint --fix"
   },
   "repository": {
