@@ -3,6 +3,9 @@
   "version": "1.0.3",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "create-core-app": ".bin/create-core-app.js"
+  },
   "scripts": {
     "dev": "BABEL_ENV=webpack webpack serve --mode=development",
     "lint": "eslint src",
