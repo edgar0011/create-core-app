@@ -1,58 +1,61 @@
 #!/usr/bin/env node
 
+const inquirer = require("inquirer");
 const { spawn, exec } = require("child_process");
 const fs = require("fs");
-var npm = require('npm')
+const shell = require('shelljs')
 
-let folderName = '.';
-
+let folderName = './__create-core-app';
+const folderSet = false
 if (process.argv.length >= 3) {
-  folderName = process.argv[2];
+  folderName = process.argv?.[2];
+  folderSet  = true
+}
+
+
+
+const prompts = [
+  {
+    type: "input",
+    message: "Target folder name:",
+    name: "folderName",
+    default: folderName,
+  },
+  {
+    type: "list",
+    message: "Package installer:",
+    name: "installer",
+    choices: ["npm", "yarn"],
+    default: "npm",
+  },
+]
+
+if (folderSet) {
+  prompts.shift()
+}
+
+(async function () {
+  const answers = await inquirer.prompt(prompts);
+
+
+  if (answers.folderName) {
+    folderName = answers.folderName;
+  }
+      // folder
   if (!fs.existsSync(folderName)) {
     fs.mkdirSync(folderName);
   }
-}
 
-const clone = spawn("git", ["clone", "https://github.com/edgar0011/create-core-app.git", folderName]);
 
-clone.on("close", code => {
-  if (code !== 0) {
-    console.error("Cloning the template failed!")
-    process.exit(code);
-  } else {
-    exec(`cd ${folderName} && pwd`, (error, stdout, stderr) => {
-    // exec(`cd ${folderName} && npm install`, (error, stdout, stderr) => {
-    // exec(`pwd`, (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`)
-        return
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`)
-        return
-      }
-      console.log(stdout);
-      console.log("...installing");
+  const gitClonExec = shell.exec(`git clone https://github.com/edgar0011/create-core-app.git ${folderName}`);
 
-      npm.commands.install([], function (error, data) {
-        if (error){
-          console.error("Installing the template failed!")
-          process.exit(code);
-          return
-        }
-        console.log("🦀 Core + 🕸 App = ❤");
-        // command succeeded, and data might have some info
-      })
+  const cdExec = shell.cd(folderName);
 
-      // const clone2 = spawn('yarn');
-      // clone2.on("close", code => {
-      //   if (code !== 0) {
-      //     console.error("Installing the template failed!")
-      //     process.exit(code);
-      //   } else {
-      //     console.log("🦀 Core + 🕸 App = ❤");
-      //   }
-      // });
-    });
-  }
-});
+  // TODO inquirer npm or yarn
+  const npmiExec = shell.exec(`${answers.installer} install`, { silent: false }, function(code, stdout, stderr) {
+    console.log(stdout);
+  });
+  console.log('npmiExec');
+  console.log(npmiExec.stdout);
+
+})()
