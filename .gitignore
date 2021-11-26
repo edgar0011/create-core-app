@@ -14,3 +14,5 @@ npm-debug.log
 .yalc
 yalc.lock
 yarn-error.log
+package-lock.json
+yarn.lock
