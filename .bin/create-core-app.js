@@ -64,7 +64,4 @@ if (folderSet) {
   const npmiExec = shell.exec(`${answers.installer} install`, { silent: false }, function(code, stdout, stderr) {
     console.log(stdout);
   });
-  console.log('npmiExec');
-  console.log(npmiExec.stdout);
-
 })()
