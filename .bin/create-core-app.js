@@ -4,6 +4,9 @@ const inquirer = require("inquirer");
 const { spawn, exec } = require("child_process");
 const fs = require("fs");
 const shell = require('shelljs')
+const chalkPipe = require('chalk-pipe');
+
+console.log('chalkPipe', chalkPipe)
 
 let folderName = './__create-core-app';
 const folderSet = false
@@ -17,16 +20,22 @@ if (process.argv.length >= 3) {
 const prompts = [
   {
     type: "input",
-    message: "Target folder name:",
+    message: () => chalkPipe('green.bold')("Target folder name:"),
     name: "folderName",
     default: folderName,
+    transformer: function(text) {
+      return chalkPipe('blue.bold')(text);
+    }
   },
   {
     type: "list",
-    message: "Package installer:",
+    message: () => chalkPipe('green.bold')("Package installer:"),
     name: "installer",
     choices: ["npm", "yarn"],
     default: "npm",
+    transformer: function(text) {
+      return chalkPipe('blue.bold')(text);
+    }
   },
 ]
 
